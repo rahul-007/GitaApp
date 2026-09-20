@@ -1,0 +1,9 @@
+streamlit>=1.38
+langchain>=0.3
+langchain-groq>=0.2
+langchain-tavily>=0.1
+tavily-python>=0.5
+python-dotenv>=1.0
+pillow>=10.0
+streamlit-cropper>=0.3
+ipykernel

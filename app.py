@@ -85,9 +85,16 @@ if image_file is not None:
 
     st.markdown("**Drag to crop just the sloka text**")
     pil_image = Image.open(io.BytesIO(raw_bytes)).convert("RGB")
+    # Mobile "Take Photo" shots can be several thousand px wide; cropping at full
+    # resolution makes the drag handles heavy/laggy on phones (touch drags appear
+    # "stuck"). Downscaling for display/cropping fixes that - OCR doesn't need
+    # more than ~1600px on the long side anyway.
+    _MAX_DIM = 1600
+    if max(pil_image.size) > _MAX_DIM:
+        pil_image.thumbnail((_MAX_DIM, _MAX_DIM), Image.LANCZOS)
     cropped_image = st_cropper(
         pil_image,
-        realtime_update=True,
+        realtime_update=False,
         box_color="#4A90D9",
         aspect_ratio=None,
         return_type="image",

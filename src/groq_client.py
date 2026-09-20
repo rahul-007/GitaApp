@@ -3,10 +3,12 @@ from langchain_groq import ChatGroq
 
 from src.config import GROQ_TEXT_MODEL, GROQ_VISION_MODEL
 
-
 def get_vision_llm(temperature: float = 0.0) -> ChatGroq:
-    """Multimodal model used for OCR + language detection on sloka photos."""
-    return ChatGroq(model=GROQ_VISION_MODEL, temperature=temperature)
+    """Multimodal model used for OCR + language detection on sloka photos.
+
+    max_tokens is capped to stay under the model's output-tokens-per-minute rate limit.
+    """
+    return ChatGroq(model=GROQ_VISION_MODEL, temperature=temperature, max_tokens=950)
 
 
 def get_text_llm(temperature: float = 0.2) -> ChatGroq:

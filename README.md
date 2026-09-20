@@ -117,7 +117,9 @@ LANGCHAIN_PROJECT=gita-app
 Then install dependencies and run the app:
 
 ```bash
-pip install -r requirements.txt
+uv venv
+Activate the env (copy command from terminal)
+uv pip install -r requirements.txt
 streamlit run app.py
 ```
 

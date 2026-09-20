@@ -94,7 +94,7 @@ if image_file is not None:
         pil_image.thumbnail((_MAX_DIM, _MAX_DIM), Image.LANCZOS)
     cropped_image = st_cropper(
         pil_image,
-        realtime_update=False,
+        realtime_update=True,
         box_color="#4A90D9",
         aspect_ratio=None,
         return_type="image",

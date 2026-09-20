@@ -50,43 +50,20 @@ if not st.session_state.show_input_options:
 else:
     input_mode = st.radio(
         "How would you like to provide the sloka?",
-        ["📷 Use camera", "🖼️ Upload from device", "⌨️ Enter text"],
+        ["📷 Photo", "⌨️ Enter text"],
         horizontal=True,
     )
-    if input_mode == "📷 Use camera":
-        # st.camera_input stays inside Streamlit's centered, max-width page layout,
-        # so merely resizing the <video> only stretches it within that narrow column.
-        # To get a real fullscreen camera on mobile, pull the widget out of the
-        # normal document flow and pin it over the entire viewport instead.
-        st.markdown(
-            """
-            <style>
-            @media (max-width: 600px) {
-                div[data-testid="stCameraInput"] {
-                    position: fixed;
-                    inset: 0;
-                    z-index: 9999;
-                    width: 100vw;
-                    height: 100vh;
-                    background: #000;
-                }
-                div[data-testid="stCameraInput"] > div {
-                    width: 100% !important;
-                    height: 100% !important;
-                }
-                div[data-testid="stCameraInput"] video {
-                    width: 100vw !important;
-                    height: 100vh !important;
-                    object-fit: cover;
-                }
-            }
-            </style>
-            """,
-            unsafe_allow_html=True,
+    if input_mode == "📷 Photo":
+        # A plain file_uploader (rather than st.camera_input's embedded webcam
+        # preview) lets mobile browsers offer "Take Photo" via the OS camera app,
+        # which opens truly fullscreen and captures at full sensor resolution -
+        # st.camera_input's live preview is capped to a low resolution tied to the
+        # widget's on-screen size, which was hurting OCR accuracy on phones.
+        st.caption(
+            "On mobile, tap below and choose **Take Photo** for the sharpest "
+            "result (better OCR accuracy than the live camera preview)."
         )
-        image_file = st.camera_input("Capture the sloka")
-    elif input_mode == "🖼️ Upload from device":
-        image_file = st.file_uploader("Choose an image", type=["jpg", "jpeg", "png"])
+        image_file = st.file_uploader("Choose or take a photo", type=["jpg", "jpeg", "png"])
     else:
         typed_text = st.text_area(
             "Type or paste the sloka text (Hindi, Bangla, or English)"
